@@ -18,13 +18,13 @@ def disconnect(client) :
 def data(client) :
     client_data = json.loads(client.data)
 
-    user_file = open("user.json", "r")
-    json_data = json.load(user_file)
+    file1 = open("user.json", "r", encoding="utf-8")
+    json_data = json.load(file1)
     json_data[client_data[0]["ip"]] = client_data
+    
+    file2 = open("user.json", "w", encoding="utf-8")
 
-    user_file = open("user.json", "w")
-
-    json.dump(json_data, user_file)
+    json.dump(json_data, file2)
 
 ps.on("connect", connect)
 ps.on("disconnect", disconnect)

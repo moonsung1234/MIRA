@@ -26,11 +26,11 @@ class Crypto :
         return self.__encrypt(data)
 
     def encrypt_file(self, file_name) :
-        file = open(file_name, "r", encoding="utf-8")
+        file1 = open(file_name, "r", encoding="utf-8")
         data = ""
 
         while True :
-            line = file.readline()
+            line = file1.readline()
 
             if not line :
                 break
@@ -39,8 +39,8 @@ class Crypto :
 
         result, table = self.__encrypt(data)
 
-        file = open(file_name, "w", encoding="utf-8")
-        file.write(result)
+        file2 = open(file_name, "w", encoding="utf-8")
+        file2.write(result)
 
         return result, table
 
@@ -59,11 +59,11 @@ class Crypto :
         return self.__decrypt(encrypted_data, table)
 
     def decrypt_file(self, file_name, table) :
-        file = open(file_name, "r", encoding="utf-8")
+        file1 = open(file_name, "r", encoding="utf-8")
         data = ""
 
         while True :
-            line = file.readline()
+            line = file1.readline()
 
             if not line :
                 break
@@ -72,7 +72,7 @@ class Crypto :
 
         result = self.__decrypt(data, table)
 
-        file = open(file_name, "w", encoding="utf-8")
-        file.write(result)
+        file2 = open(file_name, "w", encoding="utf-8")
+        file2.write(result)
 
         return result
