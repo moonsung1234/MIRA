@@ -2,3 +2,5 @@ __pycache__
 main.py
 test.txt
 decrypt.py
+user.json
+dir
