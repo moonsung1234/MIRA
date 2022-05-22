@@ -1,6 +1,6 @@
 
 
-# How to encrypt MIRA program encrypt?
+# How to encrypt MIRA program?
 
 <br/>
 
