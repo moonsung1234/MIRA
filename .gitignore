@@ -2,5 +2,7 @@ __pycache__
 main.py
 test.txt
 decrypt.py
+control.py
 user.json
+emit.png
 dir
