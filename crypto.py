@@ -1,4 +1,6 @@
 
+import numpy as np
+from PIL import Image
 from random import *
 
 class Crypto :
@@ -7,6 +9,18 @@ class Crypto :
 
     def __create_table(self, data) :
         return [randrange(1, self.table_range) for _ in range(len(data))]
+
+    def __create_image_table(self, data) :
+        length = data.shape[0] * data.shape[1]
+
+        return [
+            [
+                randrange(int(self.table_range / 10), self.table_range),
+                randrange(1, int(self.table_range / 10)),
+                randrange(1, int(self.table_range / 100)),
+                randrange(1, int(self.table_range / 100))
+            ] for _ in range(length)
+        ]
 
     def __encrypt(self, data) :
         table = self.__create_table(data)
@@ -21,6 +35,16 @@ class Crypto :
                 result += encrypted_data_list[i] + " "
 
         return result, table
+
+    def __encrypt_image(self, data) :
+        table = np.array(self.__create_image_table(data))
+        float_data = data.reshape((data.shape[0] * data.shape[1], data.shape[2]))
+        encrypted_data = float_data + table[:, 0].reshape(-1, 1)
+        encrypted_data = float_data - table[:, 1].reshape(-1, 1)
+        encrypted_data = float_data * table[:, 2].reshape(-1, 1)
+        encrypted_data = float_data / table[:, 3].reshape(-1, 1)
+
+        return encrypted_data.reshape((data.shape[0], data.shape[1], data.shape[2])).astype(np.uint8), table.tolist()
 
     def encrypt(self, data) :
         return self.__encrypt(data)
@@ -41,6 +65,20 @@ class Crypto :
 
         file2 = open(file_name, "w", encoding="utf-8")
         file2.write(result)
+
+        return result, table
+
+    def encrypt_image(self, data) :
+        return self.__encrypt_image(data)
+
+    def encrypt_image_file(self, file_name) :
+        img = Image.open(file_name)
+        img_arr = np.array(img)
+
+        result, table = self.__encrypt_image(img_arr)
+
+        result_img = Image.fromarray(result)
+        result_img.save(file_name)
 
         return result, table
 

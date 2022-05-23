@@ -5,7 +5,7 @@ import json
 host = "192.168.219.106"
 port = 8080
 
-ps = PySocketServer(host, port)
+ps = PySocketServer(host, port, receive_size=10**10)
 
 def connect(client) :
     print(client.id, " connect!")
